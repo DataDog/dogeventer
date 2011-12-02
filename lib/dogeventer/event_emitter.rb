@@ -128,4 +128,54 @@ module DogEventer
     end
 
   end
+
+
+  class ChefRun < EventEmitter
+    def initialize(host, start_time)
+      @host = host
+      @start_time = start_time
+      @events = []
+    end
+
+    def msg_title(duration)
+      "Chef completed in #{duration} seconds on #{@host}"
+    end
+
+    def event_object()
+      @host
+    end
+
+    def event_type()
+      "config_management.run"
+    end
+
+    def date_happened(date=nil)
+      (date || @start_time).to_i
+    end
+
+    def source_type_name()
+      "Chef"
+    end
+
+    def to_event(alert_type, duration=nil, date=nil)
+      duration = duration || rand(1000)
+      @events << {
+        :event_object  => event_object,
+        :event_type    => event_type,
+        :alert_type    => alert_type,
+        :date_happened => date_happened(date),
+        :msg_title     => msg_title(duration),
+        :source_type_name => source_type_name,
+        :host          => @host
+      }
+    end
+
+    def success(duration=nil, date=nil)
+      to_event :success, duration
+    end
+    def error(duration=nil, date=nil)
+      to_event :error, duration
+    end
+
+  end
 end

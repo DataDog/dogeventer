@@ -18,6 +18,12 @@ module DogEventer
       n.instance_eval &block
       @events += n.events
     end
+    
+    def chef_run(&block)
+      c = ChefRun.new(@host_name, @start_time)
+      c.instance_eval &block
+      @events += c.events
+    end
   end
 
   class Url < Scope
