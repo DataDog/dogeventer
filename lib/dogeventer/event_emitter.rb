@@ -1,4 +1,4 @@
-module Eventer
+module DogEventer
   class EventEmitter
     attr_reader :events
 

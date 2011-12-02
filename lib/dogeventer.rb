@@ -1,9 +1,9 @@
 require 'dogapi'
-require 'eventer/scope'
-require 'eventer/event_emitter'
+require 'dogeventer/scope'
+require 'dogeventer/event_emitter'
 
-module Eventer
-  class Eventer
+module DogEventer
+  class DogEventer
     def initialize(api_key, application_key=nil)
       @dog = Dogapi::Client.new(api_key, application_key)
       @events = []
@@ -32,7 +32,7 @@ module Eventer
   end
 end
 
-def eventer(start_time=nil, api_key=nil, application_key=nil, &block)
+def dogeventer(start_time=nil, api_key=nil, application_key=nil, &block)
   require 'optparse'
   
   all_config = {
@@ -86,6 +86,6 @@ def eventer(start_time=nil, api_key=nil, application_key=nil, &block)
     merged.merge to_merge[1]
   end
   
-  Eventer::Eventer.new(config[:api_key], config[:app_key]).generate config[:start_time], &block
+  DogEventer::DogEventer.new(config[:api_key], config[:app_key]).generate config[:start_time], &block
 end
 

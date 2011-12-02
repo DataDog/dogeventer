@@ -1,4 +1,4 @@
-module Eventer
+module DogEventer
   class Scope
     attr_reader :events
     def initialize(start_time, events=nil)
