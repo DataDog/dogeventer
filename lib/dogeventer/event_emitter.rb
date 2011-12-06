@@ -156,6 +156,14 @@ module DogEventer
     def source_type_name()
       "Chef"
     end
+    
+    def priority(alert_type)
+      if alert_type == :error
+        :normal
+      else
+        :low
+      end
+    end
 
     def to_event(alert_type, duration=nil, date=nil)
       duration = duration || rand(1000)
@@ -166,7 +174,8 @@ module DogEventer
         :date_happened => date_happened(date),
         :msg_title     => msg_title(duration),
         :source_type_name => source_type_name,
-        :host          => @host
+        :host          => @host,
+        :priority      => priority(alert_type)
       }
     end
 
