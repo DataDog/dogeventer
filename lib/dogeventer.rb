@@ -37,15 +37,15 @@ def dogeventer(start_time=nil, api_key=nil, application_key=nil, &block)
   
   all_config = {
     :default => {:start_time => Time.now.to_i - 60*60},
-    :cli => {},
-    :file => {}
+    :file => {},
+    :cli => {}
   }
   config_file = "~/.dogrc"
   
   optparse = OptionParser.new do |opts|
     opts.banner = "Usage: ruby #{$0} [options]"
     opts.on("-t", "--time TIME", Float, "Start time in seconds since unix epoch. Defaults to the current time minus an hour.") { |v| 
-      all_config[:cli][:start_time] = start_time
+      all_config[:cli][:start_time] = v
     }
     opts.on("-c", "--config CONFIG_FILE", "Path to config file. Defaults to #{config_file}") { |v|
       config_file = v
@@ -82,8 +82,8 @@ def dogeventer(start_time=nil, api_key=nil, application_key=nil, &block)
     end
   end
   
-  config = all_config.reduce({}) do |merged, to_merge|
-    merged.merge to_merge[1]
+  config = [:default, :file, :cli].reduce({}) do |merged, to_merge|
+    merged.merge all_config[to_merge]
   end
   
   DogEventer::DogEventer.new(config[:api_key], config[:app_key]).generate config[:start_time], &block
